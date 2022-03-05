@@ -43,4 +43,55 @@ public class JungleGrid : SGrid
     {
         base.LoadGrid();
     }
+
+    public void RearrangeLinkTile()
+    {
+
+        int[,] puzzleArr = new int[3, 3];
+
+        int t1x = -1;
+        int t1y = -1;
+        bool found = false;
+        for (int x = 0; x < 3; x++)
+        {
+            for (int y = 0; y < 3; y++)
+            {
+                if (GetGrid()[x, y].islandId == 1)
+                {
+                    t1x = x;
+                    t1y = y;
+                    found = true;
+                    break;
+                }
+            }
+            if (found)
+            {
+                break;
+            }
+        }
+        puzzleArr[t1x, t1y] = 1;
+        if (t1y != 2 || t1x == 2)
+        {
+            puzzleArr[0, 2] = 2;
+            puzzleArr[1, 2] = 3;
+        } 
+        else
+        {
+            puzzleArr[0, 1] = 2;
+            puzzleArr[1, 1] = 3;
+        }
+        int curElem = 4;
+        for (int x = 0; x < 3; x++)
+        {
+            for (int y = 0; y < 3; y++)
+            {
+                if (puzzleArr[x,y] == 0)
+                {
+                    puzzleArr[x, y] = curElem;
+                    curElem++;
+                }
+            }
+        }
+        SetGrid(puzzleArr);
+    }
 }
