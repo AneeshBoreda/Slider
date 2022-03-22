@@ -86,6 +86,10 @@ public class Player : MonoBehaviour
     }
 
 
+    public static Player GetInstance()
+    {
+        return _instance;
+    }
 
     public static PlayerAction GetPlayerAction() 
     {
@@ -133,8 +137,10 @@ public class Player : MonoBehaviour
 
     public static bool IsSafe()
     {
-        Collider2D hit = Physics2D.OverlapPoint(_instance.transform.position, LayerMask.GetMask("SlideableArea"));
-        return hit != null;
+        // DC: this was needed for game jam, but probably not really anymore
+        // Collider2D hit = Physics2D.OverlapPoint(_instance.transform.position, LayerMask.GetMask("SlideableArea"));
+        // return hit != null;
+        return true;
     }
 
     public static STile GetStileUnderneath()
@@ -188,7 +194,6 @@ public class Player : MonoBehaviour
                 if (stileUnderneath == null || s.islandId < stileUnderneath.islandId)
                 {
                     // in case where multiple overlap and none are picked, take the lowest number?
-                    if (stileUnderneath != null) Debug.Log("idk");
                     stileUnderneath = s;
                 }
             }
@@ -236,14 +241,19 @@ public class Player : MonoBehaviour
         _instance.isInHouse = isInHouse;
     }
 
-    public static bool GetIsOnWater()
+    public bool GetIsOnWater()
     {
-        return _instance.isOnWater;
+        return isOnWater;
     }
 
-    public static void SetIsOnWater(bool isOnWater)
+    public void GetIsOnWater(Conditionals.Condition c)
     {
-        _instance.isOnWater = isOnWater;
-        _instance.boatSpriteRenderer.enabled = isOnWater;
+        c.SetSpec(isOnWater);
+    }
+
+    public void SetIsOnWater(bool isOnWater)
+    {
+        this.isOnWater = isOnWater;
+        boatSpriteRenderer.enabled = isOnWater;
     }
 }
